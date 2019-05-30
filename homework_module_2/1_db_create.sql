@@ -1,0 +1,23 @@
+USE master
+GO
+
+CREATE DATABASE [RV_module_2]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'RV_module_2', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.NEWSERVER\MSSQL\DATA\RV_module_2.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'RV_module_2_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.NEWSERVER\MSSQL\DATA\RV_module_2_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+
+CREATE DATABASE [education]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'RV_module_2', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.NEWSERVER\MSSQL\DATA\education.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'RV_module_2_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.NEWSERVER\MSSQL\DATA\education_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+
+USE [education]
+GO 
+CREATE SCHEMA [R_Vasylyk] AUTHORIZATION [dbo]
+GO

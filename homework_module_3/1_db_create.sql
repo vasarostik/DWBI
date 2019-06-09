@@ -1,0 +1,13 @@
+USE master
+GO
+
+CREATE DATABASE [RV_module_3]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'RV_module_3', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.NEWSERVER\MSSQL\DATA\RV_module_3.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'RV_module_3_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.NEWSERVER\MSSQL\DATA\RV_module_3_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+
+
+

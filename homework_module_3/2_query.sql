@@ -20,9 +20,9 @@ CREATE TABLE dbo.Products(
 	city varchar(20) null)
 
 CREATE TABLE dbo.Supplies(
-	supplier_id integer foreign key references dbo.Suppliers(supplier_id),
+	supplier_id integer foreign key references dbo.Suppliers(supplier_id) ON DELETE CASCADE,
 	detail_id integer foreign key references dbo.Details(detail_id) ON DELETE CASCADE,
-	product_id integer foreign key references dbo.Products(product_id),
+	product_id integer foreign key references dbo.Products(product_id) ON DELETE CASCADE,
 	quantity integer null)
 
 
@@ -128,19 +128,25 @@ WHERE s.product_id IN (SELECT p.product_id FROM dbo.Products p where p.city = 'L
 
 --8--
 INSERT INTO dbo.Suppliers VALUES (10,'White',null,'New York')
+GO
 
 --9--
+DELETE FROM dbo.Products
+WHERE city = 'Roma'
 
 --10--
-SELECT p.city, count(p.name) FROM dbo.Products p
-group by p.city ????
-ORDER BY 1
+SELECT p.city FROM dbo.Products p
+UNION
+SELECT s.city FROM dbo.Suppliers s
+UNION
+SELECT d.city FROM dbo.Details d
+ORDER BY 1 
 
 SELECT DISTINCT s.city FROM dbo.Suppliers s
 
 --11--
 UPDATE dbo.Details
-SET color =  'Yellow'
+SET color = 'Yellow'
 WHERE weight < 15 and color = 'Red'
 
 --12--

@@ -2,10 +2,11 @@ USE SalesOrders
 GO
 
 /*1*/
-SELECT DISTINCT c.CustCity AS Cities FROM dbo.Customers c
+SELECT DISTINCT c.CustCity AS CustCities FROM dbo.Customers c
 
 /*2*/
-SELECT e.EmployeeID, 
+SELECT e.EmpFirstName,
+	   e.EmpLastName, 
 	   e.EmpPhoneNumber FROM dbo.Employees e
 
 /*3*/
@@ -17,7 +18,7 @@ SELECT p.ProductName,
 	   p.RetailPrice,
 	   c.CategoryDescription FROM dbo.Products p 
 	   JOIN dbo.Categories c ON c.CategoryID = p.CategoryID
-WHERE p.ProductNumber IN (SELECT DISTINCT o.ProductNumber FROM dbo.Order_Details o) 
+WHERE p.ProductNumber IN (SELECT DISTINCT o.ProductNumber FROM dbo.Product_Vendors o) 
 
 /*5*/
 SELECT v.VendName FROM dbo.Vendors v
@@ -29,13 +30,20 @@ SELECT e.EmpFirstName,
 	   e.EmpPhoneNumber, 
 	   e.EmployeeID 
 	   FROM dbo.Employees e 
-	   ORDER BY e.EmpLastName,e.EmpFirstName
+ORDER BY e.EmpLastName,e.EmpFirstName
 
 /*7*/
 SELECT v.VendName FROM dbo.Vendors v
 
 /*8*/
-SELECT DISTINCT c.CustState FROM dbo.Customers c
+SELECT DISTINCT CASE
+					 WHEN c.CustState = 'CA' THEN 'California'
+					 WHEN c.CustState = 'OR' THEN 'Oregon'
+					 WHEN c.CustState = 'TX' THEN 'Texas'
+					 WHEN c.CustState = 'WA' THEN 'Washington'
+					 ELSE c.CustState
+					 END
+					 FROM dbo.Customers c
 
 /*9*/
 SELECT p.ProductName, 
@@ -63,16 +71,29 @@ SELECT a.OrderNumber,
 	   FROM (SELECT o.OrderNumber,
 					o.ProductNumber,
 					MAX(p.DaysToDeliver) AS SlowVendorTime 
-			 FROM dbo.Order_Details o INNER JOIN dbo.Product_Vendors p ON p.ProductNumber = o.ProductNumber 
+			 FROM dbo.Order_Details o JOIN dbo.Product_Vendors p ON p.ProductNumber = o.ProductNumber 
 			 GROUP BY o.ProductNumber,o.OrderNumber) AS a
 GROUP BY a.OrderNumber
 ORDER BY a.OrderNumber
 
 /*13*/
 SELECT p.ProductNumber, 
-	   p.QuantityOnHand FROM dbo.Products p
+	   p.QuantityOnHand * p.RetailPrice FROM dbo.Products p
 
 /*14*/
+SELECT a.OrderNumber,
+	   MAX(a.SlowVendorTime)+DATEDIFF(DAY,o.OrderDate,o.ShipDate) as FullDeliveryTime
+	   FROM (SELECT o.OrderNumber,
+					o.ProductNumber,
+					MAX(p.DaysToDeliver) AS SlowVendorTime 
+			 FROM dbo.Order_Details o 
+			 JOIN dbo.Product_Vendors p ON p.ProductNumber = o.ProductNumber 
+			 GROUP BY o.ProductNumber,o.OrderNumber) AS a
+JOIN dbo.Orders o ON o.OrderNumber = a.OrderNumber
+GROUP BY a.OrderNumber,
+		 o.OrderDate,
+		 o.ShipDate
+ORDER BY a.OrderNumber
 
 
 /*1 additional*/
